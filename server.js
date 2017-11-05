@@ -38,3 +38,23 @@ function runServer(databaseUrl=DATABASE_URL, port=PORT){
 		});
 	});
 }
+
+//disconnects from the db and close the server
+function closeServer(){
+	return mongoose.disconnect().then(() => {
+		return new Promise ((resolve, reject) => {
+			console.log('Closing the server.');
+			//closing the server
+			server.close(err => {
+				//if there is an error, return a reject
+				if(err){
+					return reject(err);
+				}
+				//if not, return a resolve
+				resolve();
+			});
+		});
+	});
+}
+
+
