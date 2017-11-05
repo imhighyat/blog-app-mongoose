@@ -12,6 +12,43 @@ const {Blogposts} = require('./models');
 const app = express();
 app.use(bodyParser.json());
 
+//GET endpoint for the root
+app.get('/', (req, res) => {
+	res.send(`Please add /blogposts in the URL to see the list.`);
+});
+
+//GET endpoint for /blogposts
+app.get('/blogposts', (req, res) => {
+	Blogpost.find()		//get all entries
+	.then(data => {		//then pass the result and map thru each item
+		res.json({
+		//respond with an object that has a blogposts key and an array value
+			blogposts: data.map((item) => item.apiRepr())
+		});
+	})
+	.catch(err => {
+		console.error(err);
+		res.status(500).json({message: 'Internal server error occured.'});
+	});
+});
+
+
+//GET endpoint for /blogposts/:id
+//POST endpoint for /blogposts
+//PUT endpoint for /blogposts/:id
+//DELETE endpoint for /blogposts/:id
+//all other endpoints not specified should return a 404 status
+
+
+
+
+
+
+
+
+
+
+
 //will store the server object we are starting
 let server;
 
