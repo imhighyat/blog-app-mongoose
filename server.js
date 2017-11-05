@@ -57,4 +57,11 @@ function closeServer(){
 	});
 }
 
+//if server.js is directly called from node, we will invoke runServer
+if(require.main === module){
+	//if any error, catch it and log
+	runServer().catch(err => console.error(err));
+}
 
+//exporting our app and the run and close functions for testing
+module.exports = {app, runServer, closeServer};
