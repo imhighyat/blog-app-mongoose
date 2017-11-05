@@ -4,7 +4,8 @@
   "description": "Blog App with with Mongoose",
   "main": "server.js",
   "dependencies": {
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "mongoose": "^4.13.0"
   },
   "devDependencies": {},
   "scripts": {
