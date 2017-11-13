@@ -76,6 +76,17 @@ describe('Blogpost API test', function(){
 	describe('GET endpoint for the root /', function(){
 		//it should be a string that says 'Please add /blogposts
 		//in the URL to see the list.'
+		it('should return a message', function(){
+			const message = `Please add /blogposts in the URL to see the list.`;
+			return chai.request(app)
+				.get('/')
+				.then(res =>{
+					console.log(res.text);
+					res.should.have.status(200);
+					res.text.should.be.a('string');
+					res.text.should.equal(message);
+				});
+		});
 	});
 
 	//test GET with /blogposts endpoint
@@ -96,7 +107,7 @@ describe('Blogpost API test', function(){
 					return Blogpost.count();
 				})
 				.then(count => {
-					res.body.blogposts.should.have.length.of(count);
+					res.body.blogposts.should.have.length(count);
 				});
 		});
 
@@ -125,8 +136,100 @@ describe('Blogpost API test', function(){
             	});
 		});
 
-		it('should ')
+		it('should get blogpost by id', function(){
+			return Blogpost.findOne()
+				.then(res => { 
+					return chai.request(app)
+					.get(`/blogposts/${res.id}`)
+					
+				})
+				.then(data=>{
+						data.should.have.status(200);
+						data.body.should.be.a('object');
+						data.body.should.include.keys('id', 'title', 'author', 'content', 'publishDate');
+				});
+		});
 	});
+
+	//test PUT endpoint
+	describe('POST endpoint', function(){
+		it('should add a new blog', function(){
+			const newItem = generateBlog();
+			return chai.request(app)
+        	.post('/blogposts')
+        	.send(newItem)
+        	.then(function(res) {
+          		res.should.have.status(201);
+          		res.should.be.json;
+          		res.body.should.be.a('object');
+          		res.body.should.include.keys('id', 'title', 'author', 'content', 'publishDate');
+          		res.body.title.should.equal(newItem.title);
+          		res.body.id.should.not.be.null;
+          		res.body.author.should.equal(`${newItem.author.firstName} ${newItem.author.lastName}`);
+          		res.body.content.should.equal(newItem.content);
+          		return Blogpost.findById(res.body.id);
+        	})
+        	.then(function(data) {
+          		data.title.should.equal(newItem.title);
+          		data.content.should.equal(newItem.content);
+          		data.author.firstName.should.equal(newItem.author.firstName);
+          		data.author.lastName.should.equal(newItem.author.lastName);
+        	});
+		});
+	});
+
+	//test PUT endpoint
+	describe('PUT endpoint', function(){
+		it('should update the posts that you change', function(){
+			const toUpdate = {
+        		title: 'updated title',
+        		content: 'updated content',
+        		author: {
+          			firstName: 'updated first name',
+          			lastName: 'updated last name'
+        		}
+      		};
+
+      		return Blogpost
+        	.findOne()
+        	.then(data => {
+          		toUpdate.id = data.id;
+          		return chai.request(app)
+            		.put(`/blogposts/${data.id}`)
+            		.send(toUpdate);
+        	})
+        	.then(res => {
+         		res.should.have.status(204);
+          		return Blogpost.findById(toUpdate.id);
+        	})
+        	.then(post => {
+          		post.title.should.equal(toUpdate.title);
+          		post.content.should.equal(toUpdate.content);
+          		post.author.firstName.should.equal(toUpdate.author.firstName);
+          		post.author.lastName.should.equal(toUpdate.author.lastName);
+        	});
+		});
+	});
+
+	//test for DELETE endpoint
+	describe('DELETE endpoint', function() {
+    	it('should delete a post by id', function() {
+			let post;
+			return Blogpost
+        	.findOne()
+        	.then(_data => {
+          		post = _data;
+          		return chai.request(app).delete(`/blogposts/${post.id}`);
+        	})
+        	.then(res => {
+          		res.should.have.status(204);
+          		return Blogpost.findById(post.id);
+        	})
+        	.then(blog => {
+          		should.not.exist(blog);
+        	});
+    	});
+  	});
 });
 
 
