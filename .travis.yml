@@ -1,0 +1,9 @@
+language: node_js
+node_js: node
+services:
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: G+Z/N5jiQmjDQ3W7UwYIDN/CSGL2hgrNa6NVyAynM2XnvUDusB8PX1KbwxxzE1M+rKxkorSanK2gkr/6yiWjNgvn9edYkxA54C+ez/g+Dz8Gg1rGQtJbP2JTr3/q3FN5n99bZtKEEb8tOYpB9VGNTTDbN5inUkiBDcTvAEvFz/4F9J9BLe+6R4D8ToI8aiW1XRy4CVb9oe9KIVSefhUKSHkOcHGr9Asj9iEgS+wBUOFTNa5ZlhIMcg3blRemB0E6j/s9m+utZHVTXzu2JG//2zLat+Cx7J4flySw5AMu4vSnw89qbhQkarI3g8c+1XEQxuxcfNqQDcb9i63S7dHvb0dAydpj4rkMBbg3adXeXXHNFGmWx2+S0ivGizYfe4RBTQoPuKUmdTrpRzCMN0I7kCNvS90q6zixwtEQ5OSM5BsvzL0dSRzP1aXyeu7CEOsiw5HvN4tJxIT/OOaKllWDUB1th1hgofaVSHoscT0Jd/1LbwlohgvHVamKvpLOGuU4ejvrhSctSt6EZp3lPkjClsGAJOvf34y9Sm9v4Z1G0P8N8KAhK3+RAqMi5fbFit2jGpT60ZQyDiwbjAaSOVeclnNpWqK9K/JTPahDddvvdkk5Vv7Oth2P1OD106itlw6PQS5q6b01h9Y9Ar1eq2tBYu3U+Nqoq7uk2fwUJ+uMuS8=
+    app: my-blog-app-06
